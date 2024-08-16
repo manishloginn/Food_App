@@ -27,8 +27,8 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
-app.use('./uploads', express.static('uploads'));
-// app.use('uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('./uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 
@@ -272,6 +272,7 @@ app.post('/uploadData', upload, (req, res) => {
     
     const {username, restrauntName , address } = req.session.userDetails
 
+    console.log(req.file)
     try {
         const itemData = new FoodProduct ({
             image: req.file.path,
@@ -300,17 +301,6 @@ app.post('/uploadData', upload, (req, res) => {
   
 })
 
-app.get('/getProduct', async (req, res) => {
-    try {
-        const product = await FoodProduct.find({});
-        res.status(200).json(product)
-    } catch (error) {
-        res.send({
-            status: 404,
-            message: 'No product found'
-        })
-    }
-})
 
 
 app.get('/admin/Dashboard', (req, res) => {
@@ -321,6 +311,19 @@ app.get('/admin/Dashboard', (req, res) => {
         })
     }
     res.send('Add Product Page')
+})
+
+
+app.get('/getProduct', async (req, res) => {
+    try {
+        const product = await FoodProduct.find();
+        res.status(200).json(product)
+    } catch (error) {
+        res.send({
+            status: 404,
+            message: 'No product found'
+        })
+    }
 })
 
 app.get('/getRestrauntFood', async (req, res) => {
