@@ -63,7 +63,6 @@ app.get("/", (req, res) => {
 
 app.post('/registerUser', async (req, res) => {
     const { username, name, email, password, contact } = req.body
-    // console.log(contact)
     console.log(req.body)
 
 
@@ -299,6 +298,24 @@ app.post('/uploadData', upload, (req, res) => {
         res.send('Error while uploading')
     }
   
+})
+
+app.post('/deleteItem', async(req, res) => {
+    const { id } = req.body
+
+    console.log(id)
+
+    try {
+        const data = await FoodProduct.findByIdAndDelete({_id : id})
+        console.log(data)
+        res.send({
+            status: 200,
+            message: 'Item deleted successfully',
+            data: data
+        })
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 
