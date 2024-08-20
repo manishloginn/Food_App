@@ -14,7 +14,6 @@ const path = require('path');
 
 
 
-
 const RegisterUser = require('./Schema/RegisterUser')
 const { loginUtil } = require('./utils/loginUtil')
 const isAuth = require('./authUtils/adminauth')
@@ -22,13 +21,14 @@ const FoodProduct = require('./Schema/FoodProduct')
 
 
 
-const port = process.env.PORT
+const port = process.env.PORT || 5000
 const app = express()
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 // app.use('./uploads', express.static('uploads'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use(cors())
 
 
 
@@ -56,6 +56,10 @@ app.use(session({
     saveUninitialized: false,
 }))
 
+
+app.post('/', (req, res) => {
+    res.send('homepage')
+})
 
 app.get("/", (req, res) => {
     res.send('Welcome')
